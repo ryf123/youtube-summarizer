@@ -2,6 +2,31 @@ import Image from 'next/image'
 import styles from './page.module.css'
 
 export default function Home() {
+  const [inputText, setInputText] = useState('');
+  const [data, setData] = useState(null);
+  const [loading, setLoading] = useState(false);
+
+  const handleInputChange = (e) => {
+    setInputText(e.target.value);
+  };
+
+  const handleSubmit = async () => {
+    setLoading(true);
+
+    // Replace with your API endpoint
+    const apiUrl = `https://youtube-summarizer-taupe.vercel.app/api/summarize?url=${inputText}`;
+
+    try {
+      const response = await fetch(apiUrl);
+      const fetchedData = await response.json();
+      setData(fetchedData);
+    } catch (error) {
+      console.error('There was an error fetching the data:', error);
+    } finally {
+      setLoading(false);
+    }
+  };
+
   return (
     <main className={styles.main}>
       <div className={styles.description}>
@@ -15,28 +40,30 @@ export default function Home() {
             target="_blank"
             rel="noopener noreferrer"
           >
-            By{' '}
-            <Image
-              src="/vercel.svg"
-              alt="Vercel Logo"
-              className={styles.vercelLogo}
-              width={100}
-              height={24}
-              priority
-            />
+
           </a>
         </div>
       </div>
 
       <div className={styles.center}>
-        <Image
-          className={styles.logo}
-          src="/next.svg"
-          alt="Next.js Logo"
-          width={180}
-          height={37}
-          priority
-        />
+        <div>
+          <input 
+            type="text" 
+            value={inputText} 
+            onChange={handleInputChange} 
+            placeholder="Enter text..."
+          />
+          <button onClick={handleSubmit}>Submit</button>
+
+          {loading && <p>Loading...</p>}
+
+          {data && (
+            <div>
+              {/* Display your data here. This is just an example. */}
+              <p>{data}</p>
+            </div>
+          )}
+        </div>
       </div>
 
       <div className={styles.grid}>

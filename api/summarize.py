@@ -32,4 +32,4 @@ class handler(http.server.SimpleHTTPRequestHandler):
         query_params = urllib.parse.parse_qs(parsed_url.query)
         url = query_params.get('url', [''])[0]
         data = get_youtube_transcript(url)
-        self.wfile.write(bytes(json.dumps(data), 'utf-8'))
+        self.wfile.write(bytes(json.dumps(data, ensure_ascii=False), 'utf-8'))

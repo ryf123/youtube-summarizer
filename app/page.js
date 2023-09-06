@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import styles from './page.module.css';
 import { useState } from 'react';
+import { useClient } from 'next/client'; // Import the useClient pragma
 
 export default function Home() {
   const [inputText, setInputText] = useState('');
@@ -53,3 +54,6 @@ export default function Home() {
     </main>
   )
 }
+
+// Use the useClient pragma to mark the component as a client entry
+useClient(Home);
